@@ -28,7 +28,41 @@ public class JobRepository {
         return this.jobs;
     }
 
-    public void addJob(JobPost jobPost) {
+    public JobPost addJob(JobPost jobPost) {
         this.jobs.add(jobPost);
+        int jobPostId = jobPost.getPostId();
+        return getJobById(jobPostId);
+    }
+
+    public JobPost getJobById(int id) {
+        for (JobPost job : this.jobs) {
+            if (job.getPostId() == id) {
+                return job;
+            }
+        }
+
+        return null;
+    }
+
+    public JobPost updateJob(JobPost jobPost) {
+        for (JobPost job : this.jobs) {
+            if (job.getPostId() == jobPost.getPostId()) {
+                job.setPostProfile(jobPost.getPostProfile());
+                job.setPostDesc(jobPost.getPostDesc());
+                job.setReqExperience(jobPost.getReqExperience());
+                job.setPostTechStack(jobPost.getPostTechStack());
+            }
+        }
+
+        return this.getJobById(jobPost.getPostId());
+    }
+
+    public String deleteJobById(int id) {
+        boolean result = this.jobs.removeIf(job -> job.getPostId() == id);
+        if (result) {
+            return "Job has been deleted";
+        } else {
+            return "No Jobs can be deleted";
+        }
     }
 }
