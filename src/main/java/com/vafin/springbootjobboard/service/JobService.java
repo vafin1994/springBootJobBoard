@@ -13,7 +13,6 @@ import java.util.List;
 public class JobService {
 
 
-
     @Autowired
     private JobRepository repository;
 
@@ -37,7 +36,7 @@ public class JobService {
         this.repository.deleteById(id);
     }
 
-    public void load(){
+    public void load() {
         List<JobPost> jobs = new ArrayList<JobPost>(Arrays.asList(
                 new JobPost(1, "Java Developer", "Build and maintain backend services using Java and Spring Boot",
                         2, List.of("Java", "Spring Boot", "Hibernate", "PostgreSQL")),
@@ -52,5 +51,9 @@ public class JobService {
         ));
 
         repository.saveAll(jobs);
+    }
+
+    public List<JobPost> search(String text) {
+        return this.repository.findByPostProfileContainingOrPostDescContaining(text, text);
     }
 }
